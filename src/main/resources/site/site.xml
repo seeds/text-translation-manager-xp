@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+    <processors>
+        <response-processor name="translate" order="1"/>
+    </processors>
+    <mappings>
+        <mapping controller="/api/translate.js" order="1">
+            <pattern>/api/translate.*</pattern>
+        </mapping>
+    </mappings>
+    <form/>
+</site>

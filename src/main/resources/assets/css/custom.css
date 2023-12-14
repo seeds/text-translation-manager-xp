@@ -1,0 +1,84 @@
+.ui.menu .logo.image {
+    width: 35px;
+    margin-right: 1em;
+}
+
+.pusher .ui.basic.segment {
+    width: calc(100% - 260px);
+}
+
+.top-menu .button {
+    margin-top: 24px;
+}
+
+.ui.modal.confirm {
+    width: 360px;
+    margin: 0 0 0 -260px;
+}
+
+.ui.manage.modal .scrolling.content {
+    max-height: calc(80vh - 10em);
+    overflow: auto;
+}
+
+.ui.toggle.checkbox.publish input:checked~label::before,
+.ui.toggle.checkbox.publish input:checked:focus~label::before {
+    background: #609e24 !important;
+}
+
+.ui.toggle.checkbox.publish input:not(:checked)~label::before,
+.ui.toggle.checkbox.publish input:not(:checked):focus~label::before {
+    background: #cbad00 !important;
+}
+
+i.icon.sync:before {
+    content: "\f021"
+}
+
+.ui.modal .actions {
+    text-align: left;
+}
+
+.bottom-button {
+    bottom: 13.5px;
+    position: fixed !important;
+}
+
+#add-key-button {
+    display: none;
+    right: 82px;
+}
+
+#refresh-button {
+    right: 13.5px;
+}
+
+.pusher {
+    left: 260px;
+}
+
+.ui.modal>.actions {
+    text-align: left !important;
+}
+
+.ui.delete-key.modal .key {
+    font-weight: bold;
+}
+
+.table .toggle.on {
+    color: #609e24;
+}
+.table .toggle.off {
+    color: #cbad00;
+}
+
+table {
+    margin-bottom: 65px !important;
+}
+
+/*
+TODO: Add if use pagination
+#datatable-translate_wrapper>.ui.stackable.grid>.row:first-child {
+    display: none;
+}
+*/
