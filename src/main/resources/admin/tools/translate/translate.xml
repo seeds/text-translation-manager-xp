@@ -1,6 +1,6 @@
 <tool>
-    <display-name i18n="admin-tool.translate.display-name">Text translation manager</display-name>
-    <description>translate</description>
+    <display-name i18n="admin-tool.translate.display-name">Text Translation Manager</display-name>
+    <description>Manage translation keys</description>
     <allow>
         <principal>role:system.admin</principal>
         <principal>role:cms.expert</principal>

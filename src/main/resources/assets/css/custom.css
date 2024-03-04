@@ -82,3 +82,12 @@ TODO: Add if use pagination
     display: none;
 }
 */
+
+#embedpollfileinput {
+    display: none;
+}
+
+.translate-license .error-message {
+    display: none;
+    color: red;
+}

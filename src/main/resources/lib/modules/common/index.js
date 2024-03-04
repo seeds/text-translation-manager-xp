@@ -4,12 +4,15 @@ const Repo = require('/lib/xp/repo')
 const Node = require('/lib/xp/node')
 const Auth = require('/lib/xp/auth')
 const Event = require('/lib/xp/event')
+const Admin = require('/lib/xp/admin')
+const I18n = require('/lib/xp/i18n')
 
 module.exports = {
     createRepo,
     getSites,
     getMultiRepo,
-    sendUpdateEvent
+    sendUpdateEvent,
+    localize
 }
 
 function getMultiRepo() {
@@ -101,5 +104,14 @@ function sendUpdateEvent() {
     Event.send({
         type: 'translationmanager-updated',
         distributed: true
+    })
+}
+
+function localize(key) {
+    const locale = Admin.getLocale()
+
+    return I18n.localize({
+        key: key,
+        locale: locale
     })
 }

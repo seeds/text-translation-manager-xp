@@ -2,8 +2,10 @@ var services = {}
 var sites = []
 var datatable = null
 var editKeyModalValues = {}
+var translates = {}
 
 $(document).ready(function () {
+    initializeTranslates()
     initializeSelectors()
     initializeServices()
     initializeDatatable()
@@ -11,10 +13,11 @@ $(document).ready(function () {
     initializeAddLanguageSelector()
 
     listeners()
-
-    // TEst: checked
-    // .is(':checked')
 })
+
+function initializeTranslates() {
+    translates = ($('#translates').val() && JSON.parse($('#translates').val())) || {}
+}
 
 function listeners() {
     // Refresh database
@@ -59,9 +62,9 @@ function listeners() {
     // Switch status
     $('.ui.add-key.modal .publish input').on('change', function () {
         if ($(this).is(':checked')) {
-            $('.ui.add-key.modal .publish label').text('Published')
+            $('.ui.add-key.modal .publish label').text(translates.publishedLabel)
         } else {
-            $('.ui.add-key.modal .publish label').text('Draft')
+            $('.ui.add-key.modal .publish label').text(translates.draftLabel)
         }
     })
 
@@ -71,10 +74,36 @@ function listeners() {
             datatable.search($(this).val()).draw()
         }
     })
+
+    // Upload license button
+    $('#embedpollfileinput').on('change', function(e) {
+        var serviceUrl = this.getAttribute('data-service-url');
+        var licenseFile = e.target.files[0];
+
+        if (licenseFile) {
+            var formData = new FormData();
+            formData.append('license', licenseFile);
+
+            $.ajax({
+                type: 'POST',
+                url: serviceUrl,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    document.querySelector('.translate-license .error-message').style.display = 'none';
+                    location.reload()
+                },
+                error: function (data) {
+                    document.querySelector('.translate-license .error-message').style.display = 'block';
+                }
+            });
+        }
+    })
 }
 
 function initializeServices() {
-    services = JSON.parse($('#services').val())
+    services = ($('#services').val() && JSON.parse($('#services').val())) || {}
 }
 
 function initializeAddLanguageSelector() {
@@ -86,41 +115,43 @@ function initializeAddLanguageSelector() {
 }
 
 function initializeSelectors() {
-    sites = JSON.parse($('#sites').val())
+    if ($('#sites').val()) {
+        sites = JSON.parse($('#sites').val())
 
-    $('#site-selector select').empty()
-    for (var i = 0; i < sites.length; i++) {
-        $('#site-selector select').append($('<option>').val(sites[i].id).text(sites[i].title))
-    }
-    $('#site-selector').show()
+        $('#site-selector select').empty()
+        for (var i = 0; i < sites.length; i++) {
+            $('#site-selector select').append($('<option>').val(sites[i].id).text(sites[i].title))
+        }
+        $('#site-selector').show()
 
-    $('#site-selector select').on('change', function () {
-        var value = $(this).val()
-        if (value) {
-            var siteSelected = sites.filter(function (site) { return site.id === value })[0]
-            var languages = siteSelected.languages
-            if (languages && languages.length > 0) {
-                drawLanguageSelector(languages)
+        $('#site-selector select').on('change', function () {
+            var value = $(this).val()
+            if (value) {
+                var siteSelected = sites.filter(function (site) { return site.id === value })[0]
+                var languages = siteSelected.languages
+                if (languages && languages.length > 0) {
+                    drawLanguageSelector(languages)
+                }
+                $('#add-key-button').show()
+            } else {
+                $('#language-selector').hide()
+                $('#add-key-button').hide()
+                $('#datatable-translate').hide()
+                $('#custom-table-search').hide()
             }
-            $('#add-key-button').show()
-        } else {
-            $('#language-selector').hide()
-            $('#add-key-button').hide()
-            $('#datatable-translate').hide()
-            $('#custom-table-search').hide()
-        }
-    })
+        })
 
-    $('#language-selector select').on('change', function () {
-        var site = $('#site-selector select').val()
-        var value = $(this).val()
-        if (value) {
-            getTranslates(site, value)
-        } else {
-            $('#datatable-translate').hide()
-            $('#custom-table-search').hide()
-        }
-    })
+        $('#language-selector select').on('change', function () {
+            var site = $('#site-selector select').val()
+            var value = $(this).val()
+            if (value) {
+                getTranslates(site, value)
+            } else {
+                $('#datatable-translate').hide()
+                $('#custom-table-search').hide()
+            }
+        })
+    }
 }
 
 function initializeDatatable() {
@@ -130,22 +161,27 @@ function initializeDatatable() {
         info: false,
         dom: '<"top"i>rt<"bottom"><"clear">', // TODO: Comment if use pagination
         columns: [
-            { data: 'key', title: 'Key', width: '250px' },
-            { data: 'createdTime', title: 'Created', width: '100px' },
-            { data: 'modifiedTime', title: 'Last updated', width: '100px' },
+            { data: 'key', title: translates.tableKeyHeader, width: '250px' },
+            { data: 'createdTime', title: translates.tableCreatedHeader, width: '100px' },
+            { data: 'modifiedTime', title: translates.tableLastUpdatedHeader, width: '100px' },
             {
-                data: 'value', title: 'Value',
+                data: 'value', title: translates.tableValueHeader,
                 render: function (data) {
-                    return data.replace(/\n/g, '<br>')
+                    return data
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/\n/g, '<br>')
                 }
             },
             {
-                data: 'actions', orderable: false, title: 'Actions', width: '65px',
+                data: 'actions', orderable: false, title: translates.tableActionsHeader, width: '65px',
                 render: function (data, type, row, meta) {
                     return '<div class="ui icon buttons">'
-                        + '<button class="ui button icon edit-key-button" data-key-id="' + data.keyId + '" data-tooltip="Edit key ' + data.keyId + '" data-inverted="" data-position="left center"><i class="edit blue icon"></i></button>'
-                        + '<button class="ui button icon publish-key-button" data-key-id="' + data.keyId + '" data-key-status="' + data.status + '" data-tooltip="' + (data.status ? 'Unpublish' : 'Publish') + ' key ' + data.keyId + '" data-inverted="" data-position="left center"><i class="' + (data.status ? 'toggle on' : 'toggle off') + ' icon"></i></button>'
-                        + '<button class="ui button icon delete-key-button" data-key-id="' + data.keyId + '" data-tooltip="Delete key ' + data.keyId + '" data-inverted="" data-position="left center"><i class="trash red icon"></i></button>'
+                        + '<button class="ui button icon edit-key-button" data-key-id="' + data.keyId + '" data-tooltip="' + translates.tableEditKeyLabel + ' ' + data.keyId + '" data-inverted="" data-position="left center"><i class="edit blue icon"></i></button>'
+                        + '<button class="ui button icon publish-key-button" data-key-id="' + data.keyId + '" data-key-status="' + data.status + '" data-tooltip="' + (data.status ? translates.tableUnpublishLabel : translates.tablePublishLabel) + ' ' + data.keyId + '" data-inverted="" data-position="left center"><i class="' + (data.status ? 'toggle on' : 'toggle off') + ' icon"></i></button>'
+                        + '<button class="ui button icon delete-key-button" data-key-id="' + data.keyId + '" data-tooltip="' + translates.tableDeleteKeyLabel + ' ' + data.keyId + '" data-inverted="" data-position="left center"><i class="trash red icon"></i></button>'
                         + '</div>'
                 }
             },
@@ -240,7 +276,7 @@ function drawLanguageSelector(languages) {
 
 function notify(message, type) {
     $.uiAlert({
-        textHead: type === 'success' ? 'Success' : 'Error',
+        textHead: type === 'success' ? translates.notifySuccess : translates.notifyError,
         text: message || '',
         bgcolor: type === 'success' ? '#19c3aa' : '#db2828',
         textcolor: '#fff',
@@ -283,13 +319,13 @@ function openPublishModal(button) {
     var languageSelected = $('#language-selector select').val()
     var language = (languageList.find(function (l) { return l.id === languageSelected }) || {}).title
 
-    $('.ui.publish-key.modal .header').text((status ? 'Unpublish' : 'Publish') + ' key ' + keyId)
+    $('.ui.publish-key.modal .header').text((status ? translates.publishModalUnpublishKeyLabel : translates.publishModalPublishKeyLabel) + ' ' + keyId)
 
-    $('.ui.publish-key.modal .actions .publish-all').text((status ? 'Unpublish' : 'Publish') + ' in all languages')
+    $('.ui.publish-key.modal .actions .publish-all').text((status ? translates.publishModalUnpublishAllLabel : translates.publishModalPublishAllLabel))
     $('.ui.publish-key.modal .actions .publish-all').attr('data-key-id', keyId)
     $('.ui.publish-key.modal .actions .publish-all').attr('data-key-status', !status)
 
-    $('.ui.publish-key.modal .actions .publish').text((status ? 'Unpublish' : 'Publish') + ' only in ' + language)
+    $('.ui.publish-key.modal .actions .publish').text((status ? translates.publishModalUnpublishLabel : translates.publishModalPublishLabel) + ' ' + language)
     $('.ui.publish-key.modal .actions .publish').attr('data-key-id', keyId)
     $('.ui.publish-key.modal .actions .publish').attr('data-key-status', !status)
     $('.ui.publish-key.modal .actions .publish').attr('data-key-language', languageSelected)
@@ -317,7 +353,7 @@ function openEditKeyModal(button) {
                 return
             }
 
-            $('.ui.edit-key.modal>.header').text('Edit field ' + key)
+            $('.ui.edit-key.modal>.header').text(translates.editFieldModalHeader + ' ' + key)
 
             $('.ui.edit-key.modal form').trigger('reset')
             $('.ui.edit-key.modal input[name="key"]').val(data.result.key)

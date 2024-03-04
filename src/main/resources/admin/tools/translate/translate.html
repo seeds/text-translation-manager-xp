@@ -29,161 +29,170 @@
         </div>
         <a class="item active">
             <i class="translate icon"></i>
-            Text translation
+            <span th:text="${translate.textTranslationHeader}" th:remove="tag"></span>
         </a>
     </div>
-    <div class="ui bottom attached segment pushable">
+    <div th:if="${noLicense}" class="ui bottom attached segment pushable translate-license">
         <div class="pusher">
-            <!--Translate app-->
             <div class="ui basic segment">
-                <h1 class="ui header">Text translation</h1>
-
-                <!--Language selector-->
-                <div class="ui grid top-menu">
-                    <div class="sixten column">
-                        <div class="ui form">
-                            <!-- <h4 class="ui dividing header">Language Selector</h4> -->
-                            <div class="three fields">
-                                <div id="site-selector" class="field" hidden>
-                                    <label>Site</label>
-                                    <select class="ui fluid dropdown">
-                                    </select>
-                                </div>
-                                <div id="language-selector" class="field" hidden>
-                                    <label>Language</label>
-                                    <div class="ui action input">
-                                        <select class="ui fluid dropdown"></select>
-                                        <button class="ui icon primary button" data-tooltip="Add language"
-                                            data-inverted="">
-                                            <i class="plus icon"></i>
-                                        </button>
+                <h1 class="ui header" th:text="${translate.licenseHeader}"></h1>
+                <p th:text="${translate.noLicense}"></p>
+                <p class="error-message" th:text="${translate.invalidLicense}"></p>
+                <input id="embedpollfileinput" type="file" th:attr="data-service-url=${licenseServiceUrl}" />
+                <label for="embedpollfileinput" class="ui button" th:text="${translate.uploadLicense}"></label>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${noLicense}" th:remove="tag">
+        <div class="ui bottom attached segment pushable">
+            <div class="pusher">
+                <!--Translate app-->
+                <div class="ui basic segment">
+                    <h1 class="ui header" th:text="${translate.textTranslationHeader}"></h1>
+    
+                    <!--Language selector-->
+                    <div class="ui grid top-menu">
+                        <div class="sixten column">
+                            <div class="ui form">
+                                <div class="three fields">
+                                    <div id="site-selector" class="field" hidden>
+                                        <label th:text="${translate.siteSelectorLabel}"></label>
+                                        <select class="ui fluid dropdown">
+                                        </select>
+                                    </div>
+                                    <div id="language-selector" class="field" hidden>
+                                        <label th:text="${translate.languageSelectorLabel}"></label>
+                                        <div class="ui action input">
+                                            <select class="ui fluid dropdown"></select>
+                                            <button class="ui icon primary button" th:attr="data-tooltip=${translate.languageSelectorTooltip}" 
+                                                data-inverted="">
+                                                <i class="plus icon"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div id="custom-table-search" class="field" hidden>
+                                        <label th:text="${translate.searchLabel}"></label>
+                                        <input type="text" th:attr="placeholder=${translate.searchPlaceholder}">
                                     </div>
                                 </div>
-                                <div id="custom-table-search" class="field" hidden>
-                                    <label>Search in table</label>
-                                    <input type="text" placeholder="Search...">
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!--Data table-->
+                    <table id="datatable-translate" class="ui celled table" style="width:100%" hidden></table>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Add Language -->
+        <div class="ui add-language modal">
+            <div class="header" th:text="${translate.addLanguageModalHeader}"></div>
+            <div class="content">
+                <select class="ui fluid search dropdown"></select>
+            </div>
+            <div class="actions">
+                <div class="ui green add button" th:text="${translate.addLanguageModalAddBtn}"></div>
+                <div class="ui red cancel button" th:text="${translate.addLanguageModalCancelBtn}"></div>
+            </div>
+        </div>
+    
+        <!--Delete Modal-->
+        <div class="ui delete-key modal">
+            <div class="header" th:text="${translate.deleteKeyModalHeader}"></div>
+            <div class="content">
+                <p th:utext="${translate.deleteKeyModalContent}"></p>
+            </div>
+            <div class="actions">
+                <div class="ui approve button">
+                    <i class="icon trash alternate red"></i>
+                    <span th:text="${translate.deleteKeyModalConfirmBtn}" th:remove="tag"></span>
+                </div>
+                <div class="ui cancel red button" th:text="${translate.deleteKeyModalCancelBtn}"></div>
+            </div>
+        </div>
+    
+        <!--Publish Modal-->
+        <div class="ui publish-key modal">
+            <div class="header"></div>
+            <div class="actions">
+                <div class="ui publish-all green button"></div>
+                <div class="ui publish green button"></div>
+                <div class="ui cancel red button" th:text="${translate.publishKeyModalCancelBtn}"></div>
+            </div>
+        </div>
+    
+        <!-- Add Key modal -->
+        <div class="ui add-key modal">
+            <div class="header" th:text="${translate.addKeyModalHeader}"></div>
+            <div class="scrolling content">
+                <div class="description">
+                    <form class="ui form">
+                        <div class="field">
+                            <label th:text="${translate.addKeyModalKeyLabel}"></label>
+                            <input type="text" name="key" th:attr="placeholder=${translate.addKeyModalKeyPlaceholder}">
+                        </div>
+                        <div class="ui segment">
+                            <div class="field">
+                                <div class="ui toggle checkbox publish">
+                                    <input type="checkbox" name="status">
+                                    <label th:text="${translate.addKeyModalDraftLabel}"></label>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <h4 class="ui dividing header" th:text="${translate.addKeyModalTranslationsHeader}"></h4>
+                    </form>
                 </div>
-
-                <!--Data table-->
-                <table id="datatable-translate" class="ui celled table" style="width:100%" hidden></table>
+            </div>
+            <div class="actions">
+                <div class="ui green add button">
+                    <i class="icon save"></i>
+                    <span th:text="${translate.addKeyModalSaveBtn}" th:remove="tag"></span>
+                </div>
+                <div class="ui red cancel button" th:text="${translate.addKeyModalCancelBtn}"></div>
             </div>
         </div>
-    </div>
-
-    <!-- Add Language -->
-    <div class="ui add-language modal">
-        <div class="header">Add Language</div>
-        <div class="content">
-            <select class="ui fluid search dropdown"></select>
-        </div>
-        <div class="actions">
-            <div class="ui green add button">Add</div>
-            <div class="ui red cancel button">Cancel</div>
-        </div>
-    </div>
-
-    <!--Delete Modal-->
-    <div class="ui delete-key modal">
-        <div class="header">Delete key</div>
-        <div class="content">
-            <p>Are you sure you want to delete <span class="key"></span>? Deleting it will automatically remove it from all languages.</p>
-        </div>
-        <div class="actions">
-            <div class="ui approve button">
-                <i class="icon trash alternate red"></i>
-                Confirm Delete
-            </div>
-            <div class="ui cancel red button">Cancel</div>
-        </div>
-    </div>
-
-    <!--Publish Modal-->
-    <div class="ui publish-key modal">
-        <div class="header"></div>
-        <div class="actions">
-            <div class="ui publish-all green button"></div>
-            <div class="ui publish green button"></div>
-            <div class="ui cancel red button">Cancel</div>
-        </div>
-    </div>
-
-    <!-- Add Key modal -->
-    <div class="ui add-key modal">
-        <div class="header">Create translation key</div>
-        <div class="scrolling content">
-            <div class="description">
-                <form class="ui form">
-                    <div class="field">
-                        <label>Key</label>
-                        <input type="text" name="key" placeholder="Key">
-                    </div>
-                    <div class="ui segment">
+    
+        <!-- Edit Key modal -->
+        <div class="ui edit-key modal">
+            <div class="header" th:text="${translate.editKeyModalHeader}"></div>
+            <div class="scrolling content">
+                <div class="description">
+                    <form class="ui form">
                         <div class="field">
-                            <div class="ui toggle checkbox publish">
-                                <input type="checkbox" name="status">
-                                <label>Draft</label>
-                            </div>
+                            <label th:text="${translate.editKeyModalKeyLabel}"></label>
+                            <input type="text" name="key" th:attr="placeholder=${translate.editKeyModalKeyPlaceholder}">
                         </div>
-                    </div>
-                    <h4 class="ui dividing header">Translations</h4>
-                </form>
+                        <h4 class="ui dividing header" th:text="${translate.editKeyModalTranslationsHeader}"></h4>
+                    </form>
+                </div>
+            </div>
+            <div class="actions">
+                <div class="ui green save button">
+                    <i class="icon save"></i>
+                    <span th:text="${translate.editKeyModalSaveBtn}" th:remove="tag"></span>
+                </div>
+                <div class="ui olive reset button">
+                    <i class="icon history"></i>
+                    <span th:text="${translate.editKeyModalResetBtn}" th:remove="tag"></span>
+                </div>
+                <div class="ui red cancel button" th:text="${translate.editKeyModalCancelBtn}"></div>
             </div>
         </div>
-        <div class="actions">
-            <div class="ui green add button">
-                <i class="icon save"></i>
-                Save
-            </div>
-            <div class="ui red cancel button">
-                Cancel
-            </div>
-        </div>
+    
+        <button id="refresh-button" class="ui massive circular icon button bottom-button" th:attr="data-tooltip=${translate.syncTooltip}" 
+            data-inverted="">
+            <i class="sync icon"></i>
+        </button>
+        <button id="add-key-button" class="ui green massive circular icon button bottom-button" th:attr="data-tooltip=${translate.addKeyTooltip}" 
+            data-inverted="">
+            <i class="plus icon"></i>
+        </button>
     </div>
-
-    <!-- Edit Key modal -->
-    <div class="ui edit-key modal">
-        <div class="header">Edit key</div>
-        <div class="scrolling content">
-            <div class="description">
-                <form class="ui form">
-                    <div class="field">
-                        <label>Key</label>
-                        <input type="text" name="key" placeholder="Key">
-                    </div>
-                    <h4 class="ui dividing header">Translations</h4>
-                </form>
-            </div>
-        </div>
-        <div class="actions">
-            <div class="ui green save button">
-                <i class="icon save"></i>
-                Save changes
-            </div>
-            <div class="ui olive reset button">
-                <i class="icon history"></i>
-                Reset changes
-            </div>
-            <div class="ui red cancel button">
-                Cancel
-            </div>
-        </div>
-    </div>
-
-    <button id="refresh-button" class="ui massive circular icon button bottom-button" data-tooltip="Sync"
-        data-inverted="">
-        <i class="sync icon"></i>
-    </button>
-    <button id="add-key-button" class="ui green massive circular icon button bottom-button" data-tooltip="Add key"
-        data-inverted="">
-        <i class="plus icon"></i>
-    </button>
 
     <input id="services" type="hidden" data-th-value="${services}">
     <input id="sites" type="hidden" data-th-value="${sites}">
+    <input id="translates" type="hidden" data-th-value="${customJSTranslate}">
 
     <script th:src="${portal.assetUrl({'_path=js/jquery-3.1.1.min.js'})}"></script>
     <script th:src="${portal.assetUrl({'_path=js/moment.min.js'})}"></script>

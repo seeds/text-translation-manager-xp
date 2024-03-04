@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
         textTranslationValues = JSON.parse(document.getElementById('text-translation-manager-values').textContent)
     } catch(err) {
-        console.info('The translate values cannot be read')
+        console.info('The translated values cannot be read')
     }
 
     document.querySelectorAll('[data-translate-manager]').forEach(function (el) {

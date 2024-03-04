@@ -1,5 +1,5 @@
 plugins {
-	id 'com.enonic.xp.app' version '2.0.0'
+	id 'com.enonic.xp.app' version '3.4.0'
 }
 
 app {
@@ -8,6 +8,7 @@ app {
 	vendorName = "${vendorName}"
 	vendorUrl = "${vendorUrl}"
 	systemVersion = "${xpVersion}"
+	keepArchiveFileName = true
 }
 
 dependencies {
@@ -29,6 +30,7 @@ dependencies {
 	include "com.enonic.xp:lib-project:${xpVersion}"
 	include "org.json:json:20210307"
 	include "com.enonic.xp:lib-event:${xpVersion}"
+	include "com.enonic.lib:lib-license:3.1.0"
 }
 
 repositories {
@@ -37,6 +39,6 @@ repositories {
 	xp.enonicRepo()
 
 	maven {
-    	url 'http://repo.enonic.com/public/com/enonic/lib/lib-http-client/'
+    	url 'https://repo.enonic.com/public/com/enonic/lib/lib-http-client/'
  	}
 }
