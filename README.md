@@ -12,17 +12,17 @@ Install the app via Enonic market in the applications tool or build it yourself.
 
 ### Building
 ```bash
-git clone https://github.com/seeds/text-translation-manager.git
-cd text-translation-manager
+git clone https://github.com/seeds/text-translation-manager-xp.git
+cd text-translation-manager-xp
 ./gradlew clean build
 ```
-The application jar should be in /build/libs as translationmanager.jar
+The application jar should be in /build/libs as translationmanager-x.x.x.jar
 
 ## How to use
 The application includes an admin tool "Text Translation Manager".
 This is where you set keys for your sites to use for localization.
 The application also needs to be added to the sites that will use the localization keys.
-There app exposes a json script API with all translation keys to external sources. [YOUR SITE]/api/translate.js
+The app exposes a JSON script API with all translation keys to external sources. [YOUR SITE]/api/translate
 
 ## Implementation
 
@@ -30,15 +30,15 @@ When installing the application from Enonic Market, translations are done front-
 
 In the "Text Translation Manager", add a key to your site, and give it a value, for instance: my.special.label = My label!
 
-To automatically translate this on a component that uses this key we need to add the following data tag to the html element you want to localize:
+To automatically translate this on a component that uses this key we need to add the following data tag to the HTML element you want to localize:
 
 ```html
 <div data-translate-manager="my.special.label">"My label!" will be inserted here</div>
 ```
-The Enonic Processor included in the app on the site will automatically find what keys are used on the site, and include the localized values in a json script. When the page loads in your browser, the translate script will use all keys used and replace innerHTML of any DOM element with the data tag.
+The Enonic Processor included in the app on the site will automatically find what keys are used on the site and include the localized values in a JSON object. When the page loads in your browser, the translate script will find all keys being used and replace innerHTML of any DOM element with the data tag.
 
 ## License and credits
-The application is licensed under the [MIT license](https://github.com/seeds/text-translation-manager/blob/master/LICENSE.txt)
+The application is licensed under the [GNU Affero General Public License](https://github.com/seeds/text-translation-manager-xp/blob/master/LICENSE.txt)
 ## Thanks
 This application was built together with the [Norwegian Directorate of Health](https://www.helsedirektoratet.no). They made the development of this application possible, and allowed us to share it as an open source project. Thank you for sharing!
 
