@@ -37,6 +37,12 @@ To automatically translate this on a component that uses this key we need to add
 ```
 The Enonic Processor included in the app on the site will automatically find what keys are used on the site and include the localized values in a JSON object. When the page loads in your browser, the translate script will find all keys being used and replace innerHTML of any DOM element with the data tag.
 
+## Releases and Compatibility
+
+| Version | XP version   |
+| ------- | ------------ |
+| 1.0.0  | 7.9.2       |
+
 ## License and credits
 The application is licensed under the [GNU Affero General Public License](https://github.com/seeds/text-translation-manager-xp/blob/master/LICENSE.txt)
 ## Thanks
