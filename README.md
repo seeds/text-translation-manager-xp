@@ -45,6 +45,13 @@ The Enonic Processor included in the app on the site will automatically find wha
 
 ## License and credits
 The application is licensed under the [GNU Affero General Public License](https://github.com/seeds/text-translation-manager-xp/blob/master/LICENSE.txt)
+
+A license is required to use this application. Once the app is installed, the Admin Tool will be blocked until a license is provided.
+
+You can contact [Seeds](https://www.seeds.no/) to request a license. If a valid license is not found in the system, it can be installed by clicking the button `Upload license` in the Admin Tool.
+
+Made by [Seeds Consulting](https://seeds.no)
+
 ## Thanks
 This application was built together with the [Norwegian Directorate of Health](https://www.helsedirektoratet.no). They made the development of this application possible, and allowed us to share it as an open source project. Thank you for sharing!
 
