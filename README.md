@@ -22,7 +22,7 @@ The application jar should be in /build/libs as translationmanager-x.x.x.jar
 The application includes an admin tool "Text Translation Manager".
 This is where you set keys for your sites to use for localization.
 The application also needs to be added to the sites that will use the localization keys.
-The app exposes a JSON script API with all translation keys to external sources. [YOUR SITE]/api/translate
+The app exposes a JSON API with all translation keys to external sources. [YOUR SITE]/api/translate
 
 ## Implementation
 
