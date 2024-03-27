@@ -44,8 +44,6 @@ The Enonic Processor included in the app on the site will automatically find wha
 | 1.0.0  | 7.9.2       |
 
 ## License and credits
-The application is licensed under the [GNU Affero General Public License](https://github.com/seeds/text-translation-manager-xp/blob/master/LICENSE.txt)
-
 A license is required to use this application. Once the app is installed, the Admin Tool will be blocked until a license is provided.
 
 You can contact [Seeds](https://www.seeds.no/) to request a license. If a valid license is not found in the system, it can be installed by clicking the button `Upload license` in the Admin Tool.
